@@ -9,6 +9,8 @@
 - Javascript
 - React JS
 - Context API + useReducer
+- Docker
+- Kubernetes
 
 ## Features
 
