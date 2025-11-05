@@ -11,6 +11,7 @@
 - Context API + useReducer
 - Docker
 - Kubernetes
+- Jenkins
 
 ## Features
 
