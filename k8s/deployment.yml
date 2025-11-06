@@ -15,6 +15,6 @@ spec:
       containers:
         - name: shop-container
           image: spartan0007/shop:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
-          imagePullPolicy: Never
