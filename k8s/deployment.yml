@@ -17,3 +17,4 @@ spec:
           image: spartan0007/shop:latest
           ports:
             - containerPort: 80
+          imagePullPolicy: Never
