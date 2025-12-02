@@ -28,13 +28,13 @@ pipeline {
 
         stage('Tag Image') {
             steps {
-                sh 'docker tag shop:latest manoranjansethi/shop:latest'
+                sh 'docker tag shop:latest spartan0007/shop:latest'
             }
         }
 
         stage('Push Image') {
             steps {
-                sh 'docker push manoranjansethi/shop:latest'
+                sh 'docker push spartan0007/shop:latest'
             }
         }
 
