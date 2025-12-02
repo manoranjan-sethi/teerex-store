@@ -1,17 +1,22 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKER_USERNAME = credentials('docker-username')   // Jenkins credential ID
-        DOCKER_PASSWORD = credentials('docker-password')   // Jenkins credential ID
-    }
-
     stages {
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main', url: 'https://github.com/manoranjan-sethi/teerex-store.git'
+            }
+        }
+
         stage('Docker Login') {
             steps {
-                sh '''
-                    echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-                '''
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-creds',
+                                                 usernameVariable: 'DOCKER_USERNAME',
+                                                 passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh '''
+                        echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+                    '''
+                }
             }
         }
 
