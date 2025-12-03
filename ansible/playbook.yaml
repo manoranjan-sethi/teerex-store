@@ -46,9 +46,11 @@
         state: present
         definition: "{{ lookup('file', workspace + '/k8s/deployment.yml') }}"
         namespace: default
+        kubeconfig: "/home/mano/.kube/config"
 
     - name: Apply Service manifest
       kubernetes.core.k8s:
         state: present
         definition: "{{ lookup('file', workspace + '/k8s/service.yml') }}"
         namespace: default
+        kubeconfig: "/home/mano/.kube/config"
