@@ -22,14 +22,18 @@ pipeline {
 
         stage('Build & Push Docker Image') {
             steps {
-                sh """
-                  ansible-playbook ${WORKSPACE}/ansible/playbook.yaml \
-                    -e workspace=${WORKSPACE} \
-                    -e docker_username=${DOCKER_USERNAME} \
-                    -e docker_password=${DOCKER_PASSWORD} \
-                    -e image_name=spartan0007/shop \
-                    -e image_tag=v${BUILD_NUMBER}
-                """
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-creds',
+                                         usernameVariable: 'DOCKER_USERNAME',
+                                         passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh """
+                    ansible-playbook ${WORKSPACE}/ansible/playbook.yaml \
+                        -e workspace=${WORKSPACE} \
+                        -e docker_username=${DOCKER_USERNAME} \
+                        -e docker_password=${DOCKER_PASSWORD} \
+                        -e image_name=spartan0007/shop \
+                        -e image_tag=v${BUILD_NUMBER}
+                    """
+                }
             }
         }
     }

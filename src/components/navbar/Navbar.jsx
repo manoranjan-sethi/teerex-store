@@ -10,7 +10,7 @@ function Navbar() {
   return (
     <nav className="navbar">
       <div>
-        <h1>Clothes Store</h1>
+        <h1>My Clothes Store</h1>
       </div>
       <div className="nav-prod-flex">
         <Link to="/">
