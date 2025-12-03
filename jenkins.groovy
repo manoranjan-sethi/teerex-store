@@ -1,8 +1,7 @@
 pipeline {
     agent any
-
     stages {
-        stage('Checkout') {
+        stage('Checkout') { 
             steps {
                 git branch: 'main',
                     url: 'https://github.com/manoranjan-sethi/teerex-store.git'
@@ -23,15 +22,14 @@ pipeline {
 
         stage('Build & Push Docker Image') {
             steps {
-                sh '''
+                sh """
                   ansible-playbook ${WORKSPACE}/ansible/playbook.yaml \
                     -e workspace=${WORKSPACE} \
                     -e docker_username=${DOCKER_USERNAME} \
                     -e docker_password=${DOCKER_PASSWORD} \
                     -e image_name=spartan0007/shop \
-                    -e image_tag=v1
-
-                '''
+                    -e image_tag=v${BUILD_NUMBER}
+                """
             }
         }
     }

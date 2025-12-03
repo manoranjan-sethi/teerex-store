@@ -24,7 +24,7 @@
       become: true
       docker_image:
         name: "{{ image_name | default('spartan0007/shop') }}"
-        tag: "{{ image_tag | default('v1') }}"
+        tag: "{{ image_tag | default('latest') }}"
         source: build
         build:
           path: /root/project
