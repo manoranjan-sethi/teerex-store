@@ -37,3 +37,18 @@
         tag: "{{ image_tag | default('latest') }}"
         source: local
         push: true
+
+- name: Deploy application to Kubernetes
+  hosts: localhost
+  tasks:
+    - name: Apply Deployment manifest
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', workspace + '/k8s/deployment.yml') }}"
+        namespace: default
+
+    - name: Apply Service manifest
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', workspace + '/k8s/service.yml') }}"
+        namespace: default
