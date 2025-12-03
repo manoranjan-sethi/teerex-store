@@ -1,0 +1,39 @@
+- name: Build & Push Docker image
+  hosts: dockerservers
+  gather_facts: false
+  collections:
+    - community.docker
+  tasks:
+    - name: Copy project files to deployment folder
+      become: true
+      copy:
+        src: "{{ workspace | default('/home/mano/teerex-store') }}/"
+        dest: /root/project/
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Docker login to Docker Hub
+      become: true
+      docker_login:
+        registry_url: https://index.docker.io/v1/
+        username: "{{ docker_username }}"
+        password: "{{ docker_password }}"
+
+    - name: Build Docker image locally
+      become: true
+      docker_image:
+        name: "{{ image_name | default('spartan0007/shop') }}"
+        tag: "{{ image_tag | default('v1') }}"
+        source: build
+        build:
+          path: /root/project
+        state: present
+
+    - name: Tag and push image to Docker Hub
+      become: true
+      docker_image:
+        name: "{{ image_name | default('spartan0007/shop') }}"
+        tag: "{{ image_tag | default('latest') }}"
+        source: local
+        push: true

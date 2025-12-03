@@ -2,9 +2,10 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone Repository') {
+        stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/manoranjan-sethi/teerex-store.git'
+                git branch: 'main',
+                    url: 'https://github.com/manoranjan-sethi/teerex-store.git'
             }
         }
 
@@ -20,34 +21,18 @@ pipeline {
             }
         }
 
-        stage('Build Image') {
+        stage('Build & Push Docker Image') {
             steps {
-                sh 'docker build -t shop:latest .'
-            }
-        }
+                sh '''
+                  ansible-playbook ${WORKSPACE}/ansible/playbook.yaml \
+                    -e workspace=${WORKSPACE} \
+                    -e docker_username=${DOCKER_USERNAME} \
+                    -e docker_password=${DOCKER_PASSWORD} \
+                    -e image_name=spartan0007/shop \
+                    -e image_tag=v1
 
-        stage('Tag Image') {
-            steps {
-                sh 'docker tag shop:latest spartan0007/shop:latest'
+                '''
             }
-        }
-
-        stage('Push Image') {
-            steps {
-                sh 'docker push spartan0007/shop:latest'
-            }
-        }
-
-        stage('Deploy with Ansible') {
-            steps {
-                sh 'ansible-playbook /var/lib/jenkins/playbooks/deployment.yaml'
-            }
-        }
-    }
-
-    post {
-        always {
-            sh 'docker logout'
         }
     }
 }
