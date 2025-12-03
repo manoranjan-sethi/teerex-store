@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: shop-container
-          image: spartan0007/shop:latest
+          image: "{{ image_name }}:{{ image_tag }}"
           imagePullPolicy: Always
           ports:
             - containerPort: 80
