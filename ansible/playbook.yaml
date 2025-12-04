@@ -44,7 +44,7 @@
     - name: Apply Deployment manifest
       kubernetes.core.k8s:
         state: present
-        definition: "{{ lookup('template', workspace + '/k8s/deployment.yml') }}"
+        definition: "{{ lookup('template', workspace + '/k8s/deployment.yml.j2') }}"
         namespace: default
         kubeconfig: "/var/lib/jenkins/.kube/config"
 
